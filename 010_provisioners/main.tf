@@ -85,11 +85,14 @@ resource "aws_instance" "my_server" {
   user_data              = data.template_file.user_data.rendered
   subnet_id              = aws_subnet.main_subnet.id
   associate_public_ip_address = true
+
+ # A file contains all commands, only one can be call 
 /*   provisioner "local-exec" {
     command = "echo ${self.private_ip} >> files/private_ips.txt"
   } */
 
-  provisioner "remote-exec"{
+# Multiple inline can be made
+/*   provisioner "remote-exec"{
     inline = [
       "echo ${self.private_ip} >> /home/ec2-user/private_ips.txt"
     ]
@@ -99,7 +102,21 @@ resource "aws_instance" "my_server" {
       user="ec2-user"
       host="${self.public_ip}"
       private_key = file("terraform.pem")
+    } */
+
+# 
+  provisioner "file"{
+    content = "ami used: ${self.ami}"
+    destination = "/home/ec2-user/barmony.txt"
+    
+    #Need connection
+    connection {
+      type="ssh"
+      user="ec2-user"
+      host="${self.public_ip}"
+      private_key = file("terraform.pem")
     }
+
   }
 
   tags = {
