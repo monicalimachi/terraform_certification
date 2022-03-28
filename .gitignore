@@ -2,7 +2,11 @@
 **/.terraform/*
 **/.terraform.lock.hcl
 **/apply.txt
+**/terraform.*pem*
+**/terraform.*pub*
 
+**/private_ips.txt
+**/files/
 # .tfstate files
 *.tfstate
 *.tfstate.*

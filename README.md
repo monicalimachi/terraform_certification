@@ -1,4 +1,6 @@
 # terraform_certification
+current version: 4.6.0
+
 - Create main.tf
 - Add AWS Provider
 - Generate, configure AWS Credentials
@@ -19,8 +21,8 @@
 - Migrate local to remote workspace
 - Move AWs Credentials to env vars
 
-
-Commands:
+--- 
+- General Commands:
 ```bash
 terraform init
 terraform validate
@@ -28,20 +30,25 @@ terraform plan
 terraform plan -var=instance_type="t2.micro"
 terraform apply
 terraform apply -auto-approve
-terraform apply -destroy
+terraform apply -destroy -auto-approve
 terraform destroy
 ```
-To refresh, you can use:
+- To refresh, you can use:
 ```bash
 terraform apply -refresh-only
 ```
+- To migrate from cloud to local remote backend
+```bash
+
+```
+---
 
 Review expressions:
 - strings: https://www.terraform.io/language/expressions/strings
 
 ## SSH
 ```bash
-ssh ec2-user@$(terraform output -raw public_ip) -i $HOME/.ssh/ssh_key
+ssh ec2-user@$(terraform output -raw public_ip) -i $HOME/.ssh/PRIVATE_EC2_KEY
 ```
 
 ## Debug

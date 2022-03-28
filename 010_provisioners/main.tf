@@ -1,10 +1,10 @@
 terraform {
-  cloud {
+/*   cloud {
     organization = "los-patitos"
     workspaces {
       name = "provisioners"
     }
-  }
+  } */
 
   required_providers {
     aws = {
@@ -62,9 +62,19 @@ resource "aws_security_group" "sg_my_server" {
 data "template_file" "user_data" {
   template = file("./userdata.yaml")
 }
+
+resource "tls_private_key" "pk"{
+  algorithm = "RSA"
+  rsa_bits = 4096
+}
+
 resource "aws_key_pair" "deployer" {
   key_name   = "deployer-key"
-  public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDvWvn1X4bky1Qm5fKShhQZnlzTKRX9Rqw0yxVZx1MK3x+VSCmEzqFcEGaUd8GdZpn7mURCq0MeuWZJlvlyXV6mwfBbyiyO4GfadrYujycTH059N4sqPgYiTlnAp3i8F359q5gtnJvYDz6TXP2hpoz/e2VHqtTqfsWnDGEu/q5FpJvEAlREJQyc8rKzU85U4bpoOnorv2+1y+muMUX6SNw8OyLRIeOE6DiAlR+z6wAFCWCBa3tCL/djP1d9hqdENvE2FlOKCLcce5KVqvSm08Qs/oEFvQmRztj+rGXsDjUDBJ+tWjnk9leJ882o+FFe3p3D7EBjRTh6cD4gdHXMMg50jX4FRw5pCg3bdfA4wc1sex9pBZ3Uj+cYoE29YhsmuaGvM+nbkhzX+jpqHNprsdgRq00oQU5VEHtATUFK1iIGHqxIDBPNKRUI82Pt9A3xRWJvQKxYKboTH24tr6bjneFCe+hoQ/kTiSbhJMbP1PLSWnoMApXmF5ifsb6k7idStas= mony@mony"
+  #public_key = "file(terraform.pub)"
+  public_key = tls_private_key.pk.public_key_openssh
+  provisioner "local-exec" {
+    command = "echo '${tls_private_key.pk.private_key_pem}' > ./terraform.pem"
+  }
 }
 
 resource "aws_instance" "my_server" {
@@ -75,6 +85,23 @@ resource "aws_instance" "my_server" {
   user_data              = data.template_file.user_data.rendered
   subnet_id              = aws_subnet.main_subnet.id
   associate_public_ip_address = true
+/*   provisioner "local-exec" {
+    command = "echo ${self.private_ip} >> files/private_ips.txt"
+  } */
+
+  provisioner "remote-exec"{
+    inline = [
+      "echo ${self.private_ip} >> /home/ec2-user/private_ips.txt"
+    ]
+    #Need connection
+    connection {
+      type="ssh"
+      user="ec2-user"
+      host="${self.public_ip}"
+      private_key = file("terraform.pem")
+    }
+  }
+
   tags = {
     Name = "MyServer"
   }
