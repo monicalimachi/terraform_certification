@@ -37,9 +37,20 @@ terraform destroy
 ```bash
 terraform apply -refresh-only
 ```
-- To migrate from cloud to local remote backend
-```bash
 
+- Shows information about the provider requirements of the configuration in the current working directory, as an aid to understanding where each requirement was detected from:
+```bash
+    terraform providers
+```
+- Set an alternative provider and reference it in instace
+```bash
+provider "aws"{
+    alias = "west"
+    region = "us-west-1"
+}
+resource "aws_instance" "foo" {
+    provider = aws.west
+}
 ```
 ---
 
@@ -61,3 +72,4 @@ To remove debug mode:
 ```bash
 unset TF_LOG
 ```
+
