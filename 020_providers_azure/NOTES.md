@@ -15,7 +15,7 @@ apt-get install azure-cli --yes
 
 az --version
 ``` 
-Review configuration azure cli: https://pypi.org/project/azure-cli/
+- Review configuration azure cli: https://pypi.org/project/azure-cli/
 
 - Ubuntu: Create a VM on azure using modules: https://registry.terraform.io/modules/Azure/compute/azurerm/latest
 
