@@ -77,3 +77,10 @@ Named values: Are built-in expressions to reference various values such as:
  * self.<attribute> - self reference information within the block (provisioners and connections)
 
  # Named values resemble the attribute notation for map (object) values but are not objects and do not act as objects. Tou cannot use squere brackets to access attribute of Named Values like an object.
+
+
+Primary helpful commands:
+## SSH connection
+```bash
+ssh ec2-user@$(terraform output -raw public_ip) -i $HOME/.ssh/PRIVATE_EC2_KEY
+```
