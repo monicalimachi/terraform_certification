@@ -3,6 +3,7 @@ Terraform current version: 4.6.0
 Ubuntu hirsute: 21.04
 
 # Terraform Documentation
+## Variable and outputs
 Variable Definition: In this order the last will override the previous. 
 - Environment variables
 - terraform.tfvars
@@ -83,4 +84,38 @@ Primary helpful commands:
 ## SSH connection
 ```bash
 ssh ec2-user@$(terraform output -raw public_ip) -i $HOME/.ssh/PRIVATE_EC2_KEY
+```
+## Resource meta-arguments
+- depends-on
+- count
+- alias
+- lifecycle
+
+## Types and values
+- Primitive types
+1. string
+```bash
+    ami = "ami-830c94e3"
+```
+2. number
+```bash
+    size = 6.2831
+```
+3. Boolean
+```bash
+    termination_protection = true
+```
+- no type
+1. null : null represent absence or omission when you want to use the underlying default of a provider's resource configuration option
+```bash
+    endpoint = null
+```
+- complex/structural/collection types
+1. list (tuple)
+```bash
+    region = ["us-east-1a","us-east-1b"]
+```
+2. map (object)
+```bash
+    tags = {env = "Production", priority = 3}
 ```
