@@ -10,42 +10,66 @@ terraform {
 provider "aws" {
   profile = "default"
   region  = "us-east-1"
-  alias = "east"
+  alias   = "east"
 }
 
 provider "aws" {
   profile = "default"
   region  = "us-west-1"
-  alias = "west"
+  alias   = "west"
 }
 
 data "aws_subnet" "subnet-01-east" {
-  id = "subnet-08b95198d29acb21c"
+  id       = "subnet-08b95198d29acb21c"
   provider = aws.east
 }
 
-/* data "aws_subnet" "subnet-01-west" {
-  id = "subnet-059a96cdfead1ca55"
-} */
+data "aws_subnet" "subnet-01-west" {
+  id       = "subnet-059a96cdfead1ca55"
+  provider = aws.west
+}
 
-data "aws_ami" "ubuntu" {
+data "aws_ami" "ubuntu-east" {
+  provider = aws.east
   #executable_users = ["self"]
-  most_recent      = true
-  owners           = ["amazon"] #Amazon
+  most_recent = true
+  owners      = ["amazon"] #Amazon
+  filter {
+    name   = "owner-alias"
+    values = ["amazon"]
+  }
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-hvm-2.0.20210813.1-x86_64*"]
+    values = ["amzn2-ami-hvm*"]
   }
 
 }
 
-resource "aws_instance" "my_west_server" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
-  #subnet_id = data.aws_subnet.subnet-01.id
-  associate_public_ip_address = true
+data "aws_ami" "ubuntu-west" {
   provider = aws.west
+  #executable_users = ["self"]
+  most_recent = true
+  owners      = ["amazon"] #Amazon
+  filter {
+    name   = "owner-alias"
+    values = ["amazon"]
+  }
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm*"]
+  }
+
+}
+
+
+resource "aws_instance" "my_west_server" {
+  ami                         = data.aws_ami.ubuntu-west.id
+  instance_type               = "t2.micro"
+  subnet_id                   = data.aws_subnet.subnet-01-west.id
+  associate_public_ip_address = true
+  provider                    = aws.west
 
   tags = {
     "Name" = "My West Server"
@@ -53,11 +77,11 @@ resource "aws_instance" "my_west_server" {
 }
 
 resource "aws_instance" "my_east_server" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
-  subnet_id = data.aws_subnet.subnet-01-east.id
+  ami                         = data.aws_ami.ubuntu-east.id
+  instance_type               = "t2.micro"
+  subnet_id                   = data.aws_subnet.subnet-01-east.id
   associate_public_ip_address = true
-  provider = aws.east
+  provider                    = aws.east
 
   tags = {
     "Name" = "My East Server"
