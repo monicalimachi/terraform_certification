@@ -17,3 +17,13 @@
     [for k,v in var.worlds_map : upper(k) if v != "mars"]
     {for i,w in var.worlds : "${i}" => upper(w)}
 ```
+3. Splats: return a list with multiple map,values[{},{}]
+```
+    terraform console
+    var.worlds_splat
+    [for m in var.worlds_splat : m.mars_name]
+    [for m in var.worlds_splat : m.earth_name]
+    var.worlds_splat[*].mars_name
+    var.worlds_splat[*].earth_name
+    [for m in var.worlds_splat : upper(m.earth_name)]
+```
