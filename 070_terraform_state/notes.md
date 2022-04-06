@@ -65,3 +65,68 @@ terraform state mv module.app module.parent.module.app
 - All terraform state subcommands that modify state will write a backup file.
 - The backup file is named terraform.tfstate.backup. Takes a backup of the current state.
 
+## Other examples:
+```bash
+    terraform state show aws_instance.myappname
+```
+
+---
+
+# terraform init
+
+## Initializes the terraform project in the current working directory.
+- Downloading plugin dependencies : Providers and modules
+- Create a .terraform directory
+- Create a dependency lock file to enforce expected verisions for plugins and terraform itself.
+
+## Some commands
+```bash
+terraform init -upgrade             # Upgrade all plugins to the latest version that complies with the configurations version constraint
+terraform init -get-plugins-false   # Disable plugin download | Skip plugin installation
+terraform init -plugin-dir=/path/to/plugins # Use a specific directory for plugins
+terraform init -lockfile=MODE       # Use a specific lockfile mode
+
+```
+## There is a dependency lock file
+```
+.terraform.lock.hcl
+```
+## There is a State lock file
+```
+.terraform.tfstate.lock.hcl
+```
+
+---
+
+## Terraform get command is used to download and update modules in the root module
+
+- Createand own terraform modules
+- Frequenty pull updated modules but don't initialize your state or pulll new provider binaries.
+- terraform get only updates modules
+
+---
+
+# CLI commands
+- they improve debugging configuration scripts
+```bash
+terraform fmt   > rewrites terraform configuration files to a standard format and style
+terraform validate > checks the syntax of the terraform configuration file in a directory
+terraform console   > an interactive shell for evaluating Terraform expressions
+```
+
+## Terraform fmt
+- Applies a subset of the terraform language style conventions, along with other minor adjustments for readability.
+- Adjusting spacing two spaces indent
+- Syntax error
+- and using --diff will indicate what would change
+```bash
+terraform fmt --diff
+```
+## Terraform validate
+- Runs checks that verify whether a configuration is syntactically valid and internally consistent, regardless of any provided variables or existing state.
+- Validate is useful for general verification of reusable modules, including correctness of attribute names and value types.
+- terraform plan or terraform apply will run validate automatically.
+
+## Terraform console
+- Is an interactive shell for evaluating Terraform expressions.
+- Is a good place to run expressions to know how it works before apply into the code.
