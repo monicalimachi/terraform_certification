@@ -4,7 +4,7 @@
 **/apply.txt
 **/terraform.*pem*
 **/terraform.*pub*
-
+**/terraform.log
 **/private_ips.txt
 **/files/
 # .tfstate files

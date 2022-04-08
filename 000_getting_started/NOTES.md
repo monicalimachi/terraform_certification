@@ -63,7 +63,7 @@ resource "aws_instance" "foo" {
 Review expressions:
 - strings: https://www.terraform.io/language/expressions/strings
 
-## SSH
+## SSH connection
 ```bash
 ssh ec2-user@$(terraform output -raw public_ip) -i $HOME/.ssh/PRIVATE_EC2_KEY
 ```
