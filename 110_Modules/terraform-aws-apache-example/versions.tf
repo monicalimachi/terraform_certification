@@ -1,11 +1,4 @@
 terraform {
-/*   cloud {
-    organization = "los-patitos"
-    workspaces {
-      name = "provisioners"
-    }
-  } */
-
   required_providers {
     aws = {
       source  = "hashicorp/aws"

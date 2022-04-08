@@ -1,16 +1,16 @@
 variable "vpc_id" {
     type = string
-    default="vpc-004e5430015965c54"
+    default="<VPC_ID>"
 }
 
 variable "subnet_id" {
     type = string
-    default="subnet-08b95198d29acb21c"
+    default="<SUBNET_ID>"
 }
 
 variable "my_ip_with_cidr" {
   type = string
-  description = "Provide your IP eg. 186.121.217.96/32"
+  description = "Provide your IP IP/32"
 }
 
 

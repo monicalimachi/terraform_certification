@@ -67,5 +67,14 @@ The required files in the root directory:
 - A submodule that does not contain a README is considered internal use only
 - Avoid using relative paths when sourcing module blocks
 
+## Publish modules
+- To publish a module, you need to have a Github account
+- You can create a Github account by following the instructions on [Github.com] or [Github.com/join]
+- After push all the files to the root of the repository, add a tag to the repository
+```bash
+    git tag 1.0.0 or git tag v1.0.0
+    git push --tags
+```
+- Then you can login to terraform registry https://registry.terraform.io/modules give access to github account and publish your module.
 
 

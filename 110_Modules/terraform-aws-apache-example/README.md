@@ -16,7 +16,7 @@ module "apache" {
   my_ip_with_cidr = "MY_OWN_IP_ADDRESS/32"
   instance_type = "t2.micro"
   server_name = "Apache Server example"
-  subnet_id = "subnet-08b95198d29acb21c"
+  subnet_id = "<SUBNET_ID>"
 }
 
 output "public_ip" {
