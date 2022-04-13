@@ -3,14 +3,9 @@ variable "vpc_id" {
     default="<VPC_ID>"
 }
 
-variable "subnet_id" {
-    type = string
-    default="<SUBNET_ID>"
-}
-
 variable "my_ip_with_cidr" {
   type = string
-  description = "Provide your IP IP/32"
+  description = "YOUR_IP/32"
 }
 
 
