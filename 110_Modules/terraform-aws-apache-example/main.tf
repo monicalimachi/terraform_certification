@@ -3,6 +3,16 @@ data "aws_vpc" "main" {
   id = var.vpc_id
 }
 
+data "aws_availability_zones" "all" {}
+
+data "aws_subnets" "subnet_ids" {
+  filter {
+    name = "vpc-id"
+    values = [data.aws_vpc.main.id]
+  }
+
+}
+
 resource "aws_security_group" "sg_my_server" {
   name        = "sg_my_server"
   description = "My server Security group"
@@ -71,6 +81,7 @@ data "aws_ami" "ubuntu-east" {
 resource "aws_instance" "my_server" {
   ami                         = data.aws_ami.ubuntu-east.id
   instance_type               = var.instance_type
+  subnet_id                   = flatten(data.aws_subnets.subnet_ids.ids)[0]
   associate_public_ip_address = true
   user_data              = data.template_file.user_data.rendered
   key_name               = aws_key_pair.deployer.key_name
