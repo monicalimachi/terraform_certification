@@ -95,7 +95,9 @@ https://www.terraform.io/language/settings/backends
 - Check the alternatives
 
 ### Terraform force unlocking
-
+```
+terraform force-unlock [options] LOCK_ID [DIR]
+``` 
 ### Check terraform ignore
 
 ### Multiple workspaces environments
